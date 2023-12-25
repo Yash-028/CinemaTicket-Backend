@@ -1,0 +1,124 @@
+CREATE TABLE `cinemabranch` (
+  `cinema_id` VARCHAR(10) NOT NULL,
+  `cinema_name` VARCHAR(45) NOT NULL,
+  `cinema_address` VARCHAR(45) NOT NULL,
+  `cinema_phone` VARCHAR(45) NOT NULL,
+  `cinema_manager` VARCHAR(45) NOT NULL,
+  `cinema_seat_capacity` INT NOT NULL,
+  PRIMARY KEY (`cinema_id`));
+
+insert into cinemabranch(cinema_id,cinema_name,cinema_address,cinema_phone,cinema_manager,cinema_seat_capacity)
+values("B100","Cineworld","Beirut-Hamra","01 988883","John Smith",500);
+
+insert into cinemabranch(cinema_id,cinema_name,cinema_address,cinema_phone,cinema_manager,cinema_seat_capacity)
+values("B101","Cineworld","Beirut-Downtown","01 988774","Eddie hall",300);
+
+insert into cinemabranch(cinema_id,cinema_name,cinema_address,cinema_phone,cinema_manager,cinema_seat_capacity)
+values("J100","Cineworld","Jounieh-Sarba","09 774893","George Sassine",300);
+
+insert into cinemabranch(cinema_id,cinema_name,cinema_address,cinema_phone,cinema_manager,cinema_seat_capacity)
+values("S100","Cineworld","Sour-Near Sour Courts","70 724893","Rayan Nizar",200);
+
+insert into cinemabranch(cinema_id,cinema_name,cinema_address,cinema_phone,cinema_manager,cinema_seat_capacity)
+values("T100","Cineworld","Tripoli-Mina","06 210893","Zouheir Jamal",200);
+
+
+--------------------------------------------------------------------------------------------------------------
+CREATE TABLE `cinemabooking`.`room` (
+  `room_id` VARCHAR(10) NOT NULL,
+  `room_capacity` INT NOT NULL,
+  `room_type` VARCHAR(2) NOT NULL,
+  `room_status` TINYINT NOT NULL,
+  `cinema_id` VARCHAR(10) NULL,
+  PRIMARY KEY (`room_id`),
+  INDEX `cinema_id_idx` (`cinema_id` ASC),
+  CONSTRAINT `cinema_id`
+    FOREIGN KEY (`cinema_id`)
+    REFERENCES `cinemabooking`.`cinemabranch` (`cinema_id`)
+    ON DELETE RESTRICT
+    ON UPDATE RESTRICT);
+
+
+    INSERT INTO `cinemabooking`.`room`
+    (`room_id`,
+    `room_capacity`,
+    `room_type`,
+    `room_status`,
+    `cinema_id`)
+    VALUES
+    ("B100-A1",
+    200,
+    "A",
+    1,
+    "B100");
+
+    rest are the same different rooms in different cinemas
+
+    ---------------------------------------------------------------------------------------------------
+ CREATE TABLE `cinemabooking`.`staff` (
+   `staff_id` VARCHAR(10) NOT NULL,
+   `staff_fname` VARCHAR(45) NOT NULL,
+   `staff_lname` VARCHAR(45) NOT NULL,
+   `staff_phone` VARCHAR(45) NOT NULL,
+   `staff_address` VARCHAR(45) NOT NULL,
+   `staff_role` VARCHAR(45) NOT NULL,
+   `cinema_branch` VARCHAR(10) NOT NULL,
+   PRIMARY KEY (`staff_id`),
+   INDEX `cinema_id_idx` (`cinema_branch` ASC),
+   CONSTRAINT `cinema_branch`
+     FOREIGN KEY (`cinema_branch`)
+     REFERENCES `cinemabooking`.`cinemabranch` (`cinema_id`)
+     ON DELETE RESTRICT
+     ON UPDATE RESTRICT);
+
+     INSERT INTO `cinemabooking`.`staff`
+     (`staff_id`,
+     `staff_fname`,
+     `staff_lname`,
+     `staff_phone`,
+     `staff_address`,
+     `staff_role`,
+     `cinema_branch`)
+     VALUES
+     ("J100-FP40",
+     "Christelle",
+     "Yousef",
+     "71 989142",
+     "Zouq Mkayel",
+     "Film Projectionist",
+     "J100");
+
+
+
+
+--------------------------------------------------------------------------------------------------------------
+
+CREATE TABLE `cinemabooking`.`movie` (
+  `movie_id` VARCHAR(10) NOT NULL,
+  `movie_name` VARCHAR(45) NOT NULL,
+  `movie_genre` VARCHAR(45) NOT NULL,
+  `movie_releaseDate` DATE NOT NULL,
+  PRIMARY KEY (`movie_id`));
+
+------------------------------------------------------------------------------------------------------------
+CREATE TABLE `cinemabooking`.`room_movie` (
+  `rooom_id` VARCHAR(10) NOT NULL,
+  `movie_id` VARCHAR(10) NOT NULL,
+  `movie_start_Time` VARCHAR(45) NOT NULL,
+  `movie_end_Time` VARCHAR(45) NULL,
+  PRIMARY KEY (`rooom_id`, `movie_id`, `movie_start_Time`),
+  INDEX `movie_id_idx` (`movie_id` ASC),
+  CONSTRAINT `room_id`
+    FOREIGN KEY (`rooom_id`)
+    REFERENCES `cinemabooking`.`room` (`room_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `movie_id`
+    FOREIGN KEY (`movie_id`)
+    REFERENCES `cinemabooking`.`movie` (`movie_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+--------------------------------------------------------------------------------------------------------------------
+
+
